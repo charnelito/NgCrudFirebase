@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -10,6 +12,9 @@ import { EmployeeComponent } from './employees/employee/employee.component';
 import { MaterialModule } from './material/material.module';
 //Inject the employee service class
 import { EmployeeService } from './shared/employee.service';
+
+import { environment } from '../environments/environment';
+import { DepartmentService } from './shared/department.service'
 
 @NgModule({
   declarations: [
@@ -22,9 +27,11 @@ import { EmployeeService } from './shared/employee.service';
     BrowserAnimationsModule,
     MaterialModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig)
   ],
-  providers: [EmployeeService], // Inject the employee service
+  providers: [EmployeeService, DepartmentService], // Inject the employee service
   bootstrap: [AppComponent]
 })
 export class AppModule { }
