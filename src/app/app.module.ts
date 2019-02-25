@@ -14,13 +14,15 @@ import { MaterialModule } from './material/material.module';
 import { EmployeeService } from './shared/employee.service';
 
 import { environment } from '../environments/environment';
-import { DepartmentService } from './shared/department.service'
+import { DepartmentService } from './shared/department.service';
+import { EmployeeListComponent } from './employees/employee-list/employee-list.component'
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeesComponent,
-    EmployeeComponent
+    EmployeeComponent,
+    EmployeeListComponent
   ],
   imports: [
     BrowserModule,
