@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from 'src/app/shared/employee.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { DepartmentService } from 'src/app/shared/department.service';
+import { MatDialog, MatDialogConfig } from '@angular/material';
+import { EmployeeComponent } from '../employee/employee.component';
+import { NotificationService } from 'src/app/shared/notification.service';
+
 
 @Component({
   selector: 'app-employee-list',
@@ -11,7 +15,9 @@ import { DepartmentService } from 'src/app/shared/department.service';
 export class EmployeeListComponent implements OnInit {
 
   constructor(private service: EmployeeService,
-    private departmentService: DepartmentService) { }
+    private departmentService: DepartmentService,
+    private dialog: MatDialog,
+    private notificationService: NotificationService) { }
 
   listData: MatTableDataSource<any>;
   displayColumns: string[] = ['fullName', 'email', 'mobile', 'city', 'departmentName', 'actions'];
@@ -49,6 +55,31 @@ export class EmployeeListComponent implements OnInit {
 
   applyFilter() {
     this.listData.filter = this.searchKey.trim().toLowerCase();
+  }
+
+  onCreate() {
+    this.service.initializeFormGroup();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    this.dialog.open(EmployeeComponent, dialogConfig);
+  }
+
+  onEdit(row){
+    this.service.populateForm(row);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = "60%";
+    this.dialog.open(EmployeeComponent, dialogConfig);
+  }
+
+  onDelete($key){
+    if(confirm('Are you sure to delete this record ?')){
+      this.service.deleteEmployee($key);
+      this.notificationService.warn('! Deleted successfully');
+    }
   }
 
 }
